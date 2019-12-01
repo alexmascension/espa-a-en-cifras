@@ -1,0 +1,23 @@
+# MAP FORMATS
+*.json
+*.prj
+*.sbn
+*.sbx
+*.shp
+*.shp.xml
+*.shx
+
+# DATASETS
+*.csv
+*.xls
+*.xlsx
+*.zip
+*.rtf
+*.doc
+*.docx
+*.pickle
+*.DAT
+*.txt
+
+# Notebooks
+/.ipynb_checkpoints
