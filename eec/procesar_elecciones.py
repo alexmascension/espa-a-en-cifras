@@ -26,10 +26,10 @@ def procesar_elecciones(carpeta, sufijo):
               'mes': [],
               'codigo candidatura': [],
               'siglas candidatura': [],
-            'denominacion candidatura': [],
+              'denominacion candidatura': [],
               'codigo provincial': [],
               'codigo autonomico': [],
-            'codigo nacional': []}
+              'codigo nacional': []}
 
     with open(carpeta + '03' + sufijo + '.DAT', 'r') as f:
         for l in f.readlines():
@@ -46,7 +46,6 @@ def procesar_elecciones(carpeta, sufijo):
     df_3 = pd.DataFrame(dict_3)
     df_3.to_csv(carpeta + '03' + sufijo + '.csv', index=None, sep=';')
 
-
     # 4. CANDIDATOS
     print('Procesando archivo 4')
     dict_4 = {'eleccion': [],
@@ -55,11 +54,11 @@ def procesar_elecciones(carpeta, sufijo):
               'numero de vuelta': [],
               'codigo provincia': [],
               'districto electoral': [],
-            'codigo municipio': [],
+              'codigo municipio': [],
               'codigo codigo candidatura': [],
               'orden candidato': [],
               'tipo candidato': [],
-            'nombre': [],
+              'nombre': [],
               'primer apellido': [],
               'segundo apellido': [],
               'sexo': [],
@@ -67,7 +66,7 @@ def procesar_elecciones(carpeta, sufijo):
               'mes nacimiento': [],
               'año nacimiento': [],
               'dni': [],
-              'candidato elegido': [],}
+              'candidato elegido': [], }
 
     with open(carpeta + '04' + sufijo + '.DAT', 'r') as f:
         for l in f.readlines():
@@ -96,12 +95,17 @@ def procesar_elecciones(carpeta, sufijo):
 
     # 5.MUNICIPIOS
     print('Procesando archivo 5')
-    dict_5 = {'tipo eleccion': [],  'año eleccion': [],  'mes eleccion': [],  'numero vuelta': [],  'codigo comunidad autonoma': [],
-            'codigo provincia': [],  'codigo municipio': [],  'numero distrito': [],  'nombre municipio': [],  'codigo distrito': [],
-            'codigo partido judicial': [],  'codigo diputacion provincial': [],  'codigo comarca': [],  'poblacion': [],  'numero mesas': [],
-            'censo ine': [],  'censo escrutinio': [],  'censo cere': [], 'votantes cere': [],  'votances primer avance': [],  'votantes segundo avance': [],
-            'votos blancos': [],  'votos nulos': [],  'votos candidaturas': [],  'numero escaños': [],  'votos afirmativos referendum': [],
-            'votos negativos referendum': [], 'datos oficiales': []}
+    dict_5 = {'tipo eleccion': [], 'año eleccion': [], 'mes eleccion': [], 'numero vuelta': [],
+              'codigo comunidad autonoma': [],
+              'codigo provincia': [], 'codigo municipio': [], 'numero distrito': [], 'nombre municipio': [],
+              'codigo distrito': [],
+              'codigo partido judicial': [], 'codigo diputacion provincial': [], 'codigo comarca': [], 'poblacion': [],
+              'numero mesas': [],
+              'censo ine': [], 'censo escrutinio': [], 'censo cere': [], 'votantes cere': [],
+              'votances primer avance': [], 'votantes segundo avance': [],
+              'votos blancos': [], 'votos nulos': [], 'votos candidaturas': [], 'numero escaños': [],
+              'votos afirmativos referendum': [],
+              'votos negativos referendum': [], 'datos oficiales': []}
     dict_5_types = [int] * 8 + [str] + [int] * 18 + [str]
 
     with open(carpeta + '05' + sufijo + '.DAT', 'r') as f:
@@ -142,11 +146,10 @@ def procesar_elecciones(carpeta, sufijo):
 
     df_5.to_csv(carpeta + '05' + sufijo + '.csv', index=None, sep=';')
 
-
     # 6. CANDIDATURAS MUNICIPIOS
     print('Procesando archivo 6')
-    dict_6 = {'tipo eleccion': [],  'año eleccion': [],  'mes eleccion': [],  'numero vuelta': [],
-            'codigo provincia': [],  'codigo municipio': [],  'numero distrito': [], 'codigo candidatura': [],
+    dict_6 = {'tipo eleccion': [], 'año eleccion': [], 'mes eleccion': [], 'numero vuelta': [],
+              'codigo provincia': [], 'codigo municipio': [], 'numero distrito': [], 'codigo candidatura': [],
               'votos candidatura': [], 'numero candidatos': []}
     dict_6_types = [int] * 10
 
@@ -169,14 +172,17 @@ def procesar_elecciones(carpeta, sufijo):
         df_6[col_name] = df_6[col_name].astype(dict_6_types[col])
     df_6.to_csv(carpeta + '06' + sufijo + '.csv', index=None, sep=';')
 
-
     # 7. DATOS MUNICIPIO
     print('Procesando archivo 7')
-    dict_7 = {'tipo eleccion': [],  'año eleccion': [],  'mes eleccion': [],  'numero vuelta': [],  'codigo comunidad autonoma': [],
-            'codigo provincia': [],   'codigo distrito': [],  'nombre territorio': [],  'poblacion': [],  'numero mesas': [],
-            'censo ine': [],  'censo escrutinio': [],  'censo cere': [], 'votantes cere': [],  'votances primer avance': [],  'votantes segundo avance': [],
-            'votos blancos': [],  'votos nulos': [],  'votos candidaturas': [],  'numero escaños': [],  'votos afirmativos referendum': [],
-            'votos negativos referendum': [], 'datos oficiales': []}
+    dict_7 = {'tipo eleccion': [], 'año eleccion': [], 'mes eleccion': [], 'numero vuelta': [],
+              'codigo comunidad autonoma': [],
+              'codigo provincia': [], 'codigo distrito': [], 'nombre territorio': [], 'poblacion': [],
+              'numero mesas': [],
+              'censo ine': [], 'censo escrutinio': [], 'censo cere': [], 'votantes cere': [],
+              'votances primer avance': [], 'votantes segundo avance': [],
+              'votos blancos': [], 'votos nulos': [], 'votos candidaturas': [], 'numero escaños': [],
+              'votos afirmativos referendum': [],
+              'votos negativos referendum': [], 'datos oficiales': []}
     dict_7_types = [int] * 7 + [str] + [int] * 14 + [str]
 
     with open(carpeta + '07' + sufijo + '.DAT', 'r') as f:
@@ -212,11 +218,11 @@ def procesar_elecciones(carpeta, sufijo):
 
     df_7.to_csv(carpeta + '07' + sufijo + '.csv', index=None, sep=';')
 
-
     # 8. CANDIDATURAS AMBITO SUPERIOR MUNICIPIO
     print('Procesando archivo 8')
-    dict_8 = {'tipo eleccion': [],  'año eleccion': [],  'mes eleccion': [],  'numero vuelta': [], 'codigo comunidad autonoma': [],
-            'codigo provincia': [],   'numero distrito': [], 'codigo candidatura': [],
+    dict_8 = {'tipo eleccion': [], 'año eleccion': [], 'mes eleccion': [], 'numero vuelta': [],
+              'codigo comunidad autonoma': [],
+              'codigo provincia': [], 'numero distrito': [], 'codigo candidatura': [],
               'votos candidatura': [], 'numero candidatos': []}
     dict_8_types = [int] * 10
 
@@ -242,12 +248,15 @@ def procesar_elecciones(carpeta, sufijo):
 
     # 9.DATOS MESAS
     print('Procesando archivo 9')
-    dict_9 = {'tipo eleccion': [],  'año eleccion': [],  'mes eleccion': [],  'numero vuelta': [],  'codigo comunidad autonoma': [],
-            'codigo provincia': [],  'codigo municipio': [],  'numero distrito': [],  'codigo seccion': [],  'codigo mesa': [],
-            'censo ine': [],  'censo escrutinio': [],  'censo cere': [], 'votantes cere': [],  'votances primer avance': [],  'votantes segundo avance': [],
-            'votos blancos': [],  'votos nulos': [],  'votos candidaturas': [],  'votos afirmativos referendum': [],
-            'votos negativos referendum': [], 'datos oficiales': []}
-    dict_9_types = [int] * 8 + [str] * 2 + [int] * 11 + [str]
+    dict_9 = {'tipo eleccion': [], 'año eleccion': [], 'mes eleccion': [], 'numero vuelta': [],
+              'codigo comunidad autonoma': [],
+              'codigo provincia': [], 'codigo municipio': [], 'numero distrito': [], 'codigo seccion': [],
+              'codigo mesa': [],
+              'censo ine': [], 'censo escrutinio': [], 'censo cere': [], 'votantes cere': [],
+              'votances primer avance': [], 'votantes segundo avance': [],
+              'votos blancos': [], 'votos nulos': [], 'votos candidaturas': [], 'votos afirmativos referendum': [],
+              'votos negativos referendum': [], 'datos oficiales': [], 'codigo': []}
+    dict_9_types = [int] * 8 + [str] * 2 + [int] * 11 + 2 * [str]
 
     with open(carpeta + '09' + sufijo + '.DAT', 'r') as f:
         for l in f.readlines():
@@ -273,6 +282,7 @@ def procesar_elecciones(carpeta, sufijo):
             dict_9['votos afirmativos referendum'].append(l[86:93])
             dict_9['votos negativos referendum'].append(l[93:100])
             dict_9['datos oficiales'].append(l[100:101])
+            dict_9['codigo'].append(l[11:22].strip())
 
     df_9 = pd.DataFrame(dict_9)
     for col in range(len(dict_9_types)):
@@ -281,16 +291,17 @@ def procesar_elecciones(carpeta, sufijo):
 
     df_9.to_csv(carpeta + '09' + sufijo + '.csv', index=None, sep=';')
 
-
     # 10 DATOS CANDIDATURAS MESA
     print('Procesando archivo 10')
-    dict_10 = {'tipo eleccion': [], 'año eleccion': [], 'mes eleccion': [], 'numero vuelta': [], 'codigo comunidad autonoma': [],
-              'codigo provincia': [], 'codigo municipio': [], 'numero distrito': [], 'codigo seccion': [], 'codigo mesa': [],
-               'codigo candidatura': [], 'votos candidatura': []}
-    dict_10_types = [int] * 8 + [str] * 2 + [int] * 2
+    dict_10 = {'tipo eleccion': [], 'año eleccion': [], 'mes eleccion': [], 'numero vuelta': [],
+               'codigo comunidad autonoma': [],
+               'codigo provincia': [], 'codigo municipio': [], 'numero distrito': [], 'codigo seccion': [],
+               'codigo mesa': [],
+               'codigo candidatura': [], 'votos candidatura': [], 'codigo': []}
+    dict_10_types = [int] * 8 + [str] * 2 + [int] * 2 + [str]
 
     with open(carpeta + '10' + sufijo + '.DAT', 'r') as f:
-        for l in f.readlines():
+        for l in tqdm(f.readlines()):
             dict_10['tipo eleccion'].append(l[:2])
             dict_10['año eleccion'].append(l[2:6])
             dict_10['mes eleccion'].append(l[6:8])
@@ -303,18 +314,18 @@ def procesar_elecciones(carpeta, sufijo):
             dict_10['codigo mesa'].append(l[22:23])
             dict_10['codigo candidatura'].append(l[23:29])
             dict_10['votos candidatura'].append(l[29:36])
+            dict_10['codigo'].append(l[11:22].strip())
 
     df_10 = pd.DataFrame(dict_10)
-    for col in range(len(dict_10_types)):
+    for col in range(len(df_10.columns)):
         col_name = df_10.columns[col]
         df_10[col_name] = df_10[col_name].astype(dict_10_types[col])
 
     df_10.to_csv(carpeta + '10' + sufijo + '.csv', index=None, sep=';')
 
-
     """
     A partir de aquí vamos a hacer unas tablas más user-friendly. Para ello, vamos a crear una tabla con las secciones
-    (que es lo que nos interesa), y vamos a incluir el recuento de votos tal cual lo obtenemos de la matriz de votos 
+    (que es lo que nos interesa), y vamos a incluir el recuento de votos tal cual lo obtenemos de la matriz de votos
     de candidatura. La matriz final tendrá el número de votantes (por CERE también), votos blancos, votos nulos, y resultados
     de los principales partidos políticos. La elección de los partidos la vamos a hacer a partir de un algoritmo genérico
     que describiré más abajo.
@@ -323,12 +334,12 @@ def procesar_elecciones(carpeta, sufijo):
     """
     Primero vamos a obtener los nombres de las candidaturas. Para ello vamos a crear un diccionario que transforme el número
     de la candidatura en las siglas. Debido a traducciones, existen partidos con el mismo nombre pero distinto número de candidatura.
-    Por ejemplo, PODEMOS está en las formas PODEMOS-EUI, PODEMOS-EU, PODEMOS-IU, PODEMOS-IX y, además, PODEMOS-IU tiene 5 
-    candidaturas diferentes (3 unidas podemos, uno de alto Aragón y otra de Euskadi). Todo esto debería ser lo mismo. Así, 
-    deberíamos obtener una lista con las siglas iguales. 
-    
+    Por ejemplo, PODEMOS está en las formas PODEMOS-EUI, PODEMOS-EU, PODEMOS-IU, PODEMOS-IX y, además, PODEMOS-IU tiene 5
+    candidaturas diferentes (3 unidas podemos, uno de alto Aragón y otra de Euskadi). Todo esto debería ser lo mismo. Así,
+    deberíamos obtener una lista con las siglas iguales.
+
     Sin embargo, esto se complica aún más. PSOE por ejemplo tiene las formas PSOE (catalán y castellano), PSC, PSE, PSdeG-PSOE, etc.
-    
+
     Por desgracia, no todos los partidos se pueden simplificar automáticamente, así que va a ir que ajustándolos manualmente.
     Con nuevas elecciones y nuevos partidos habrá que ir alterando las normas de igualdad de siglas.
     """
@@ -336,17 +347,17 @@ def procesar_elecciones(carpeta, sufijo):
     df_candidaturas = df_3.copy()
     df_candidaturas = df_candidaturas[['codigo candidatura', 'siglas candidatura']]
 
-    intercambios = {'AVANT ADELA': 'AVANT', 'AVANT-LOS V': 'AVANT', 'EB': 'EB', 'EB-AZ':'EB',
-                   'PCOE':'PC', 'PCPA':'PC', 'PCPC':'PC', 'PCPE':'PC',  'PCTE/ELAK': 'PC', 'PCTG': 'PC',
-                   'UNIDOS PODEMOS': 'PODEMOS', 'UNIDAS PODEMOS': 'PODEMOS',
-                   'PSC': 'PSOE', 'PSdeG-PSOE': 'PSOE', 'PSE-EE (PSO': 'PSOE', }
+    intercambios = {'AVANT ADELA': 'AVANT', 'AVANT-LOS V': 'AVANT', 'EB': 'EB', 'EB-AZ': 'EB',
+                    'PCOE': 'PC', 'PCPA': 'PC', 'PCPC': 'PC', 'PCPE': 'PC', 'PCTE/ELAK': 'PC', 'PCTG': 'PC',
+                    'UNIDOS PODEMOS': 'PODEMOS', 'UNIDAS PODEMOS': 'PODEMOS',
+                    'PSC': 'PSOE', 'PSdeG-PSOE': 'PSOE', 'PSE-EE (PSO': 'PSOE', }
 
     lista_candts = [i.strip() for i in df_candidaturas['siglas candidatura'].values]
     lista_candts = [intercambios[i] if i in intercambios.keys() else i for i in lista_candts]
 
     # Reemplazamos todos los PODEMOS-XXXX y simplificamos siglas (las que se lleven escaño al menos).
     dict_siglas = {'PODEMOS-': 'UP', 'UNID': 'UP', 'ERC-': 'ERC', 'JxCAT-': 'JxCAT', 'CCa-': 'CCa', 'CC-': 'CCa',
-                   'Compromís': 'COMPR', 'CUP-': 'CUP', 'BNG-': 'BNG', '¡TERUEL': '¡TE!', }
+                   'COMPROM': 'COMPR', 'CUP-': 'CUP', 'BNG-': 'BNG', '¡TERUEL': '¡TE!', 'PP-': 'PP'}
 
     for key, val in dict_siglas.items():
         lista_candts = [val if i.startswith(key) else i for i in lista_candts]
@@ -354,7 +365,6 @@ def procesar_elecciones(carpeta, sufijo):
     df_candidaturas['siglas candidatura'] = lista_candts
     df_candidaturas['codigo candidatura'] = df_candidaturas['codigo candidatura'].astype(int)
     dict_siglas = dict(zip(df_candidaturas['codigo candidatura'].values, df_candidaturas['siglas candidatura'].values))
-
 
     """
     Ahora que tenemos las candidaturas, vamos a abrir el fichero de votos por candidatura y por sección.
@@ -367,62 +377,37 @@ def procesar_elecciones(carpeta, sufijo):
     # Primero sumamos los votos de candidaturas y mesas en general, para reducir el número de filas.
     df_votos_candidatura = df_10.copy()
 
-    df_votos_candidatura = df_votos_candidatura[['codigo provincia', 'codigo municipio', 'numero distrito', 'codigo seccion', 'codigo candidatura', 'votos candidatura']]
-    df_votos_candidatura = df_votos_candidatura.sort_values(by=['codigo provincia', 'codigo municipio', 'numero distrito', 'codigo seccion', 'codigo candidatura', 'votos candidatura'])
-    df_votos_candidatura = df_votos_candidatura.astype(int)
+    df_votos_candidatura = df_votos_candidatura[
+        ['codigo', 'codigo candidatura', 'votos candidatura']]
+    df_votos_candidatura = df_votos_candidatura.sort_values(
+        by=['codigo', 'codigo candidatura', 'votos candidatura'])
     df_votos_candidatura = df_votos_candidatura[df_votos_candidatura['votos candidatura'] > 0]
-    df_votos_candidatura['votos candidatura'] = df_votos_candidatura.groupby(['codigo provincia', 'codigo municipio',
-                        'numero distrito', 'codigo seccion', 'codigo candidatura',])['votos candidatura'].transform('sum')
+
+    df_votos_candidatura = df_votos_candidatura.replace({'codigo candidatura': dict_siglas})
+    df_votos_candidatura['votos candidatura'] = df_votos_candidatura.groupby(['codigo', 'codigo candidatura', ])[
+        'votos candidatura'].transform('sum')
     df_votos_candidatura = df_votos_candidatura.drop_duplicates(keep='first')
     df_votos_candidatura = df_votos_candidatura.reset_index(drop=True)
-    df_votos_candidatura = df_votos_candidatura.replace({'codigo candidatura':dict_siglas})
 
+    df_votos_candidatura = df_votos_candidatura.pivot(index='codigo', columns='codigo candidatura',
+                                                      values='votos candidatura')
 
     df_votos_mesa = df_9.copy()
-    df_votos_mesa = df_votos_mesa[['codigo provincia', 'codigo municipio', 'numero distrito', 'codigo seccion', 'censo escrutinio', 'votos blancos', 'votos nulos', 'votos candidaturas']]
-    df_votos_mesa = df_votos_mesa.sort_values(by=['codigo provincia', 'codigo municipio', 'numero distrito', 'codigo seccion', 'censo escrutinio',])
-    df_votos_mesa = df_votos_mesa.astype(int)
-    df_votos_mesa[['censo escrutinio', 'votos blancos', 'votos nulos', 'votos candidaturas']] = df_votos_mesa.groupby(['codigo provincia', 'codigo municipio','numero distrito', 'codigo seccion',])[['censo escrutinio', 'votos blancos', 'votos nulos', 'votos candidaturas']].transform('sum')
+    df_votos_mesa = df_votos_mesa[
+        ['codigo', 'censo escrutinio', 'votos blancos', 'votos nulos', 'votos candidaturas']]
+    df_votos_mesa = df_votos_mesa.sort_values(
+        by=['codigo', 'censo escrutinio', ])
+    df_votos_mesa[['censo escrutinio', 'votos blancos', 'votos nulos', 'votos candidaturas']] = \
+        df_votos_mesa.groupby(['codigo', ])[['censo escrutinio', 'votos blancos', 'votos nulos',
+                                             'votos candidaturas']].transform('sum')
 
     df_votos_mesa = df_votos_mesa.drop_duplicates(keep='first')
-    df_votos_mesa = df_votos_mesa.reset_index(drop=True)
+    df_votos_mesa = df_votos_mesa.set_index('codigo')
 
-    df_combinado = pd.DataFrame(columns=['codigo provincia', 'codigo municipio', 'numero distrito', 'codigo seccion',
-                                         'censo escrutinio', 'votos candidaturas', 'votos blancos', 'votos nulos', ] +
-                                list(dict.fromkeys(lista_candts)),
-                                index=range(len(df_votos_mesa)))
+    df_combinado = df_votos_candidatura.join(df_votos_mesa, how='outer', sort=True)
 
-    for col in ['codigo provincia', 'codigo municipio', 'numero distrito', 'codigo seccion',
-                'censo escrutinio', 'votos candidaturas', 'votos blancos', 'votos nulos', ]:
-        df_combinado[col] = df_votos_mesa[col].values
-
-    for row in tqdm(range(len(df_votos_mesa))[:]):
-        df_seccion = df_votos_candidatura[(df_votos_candidatura['codigo provincia'] == df_combinado['codigo provincia'].loc[row]) &
-        (df_votos_candidatura['codigo municipio'] == df_combinado['codigo municipio'].loc[row]) &
-        (df_votos_candidatura['numero distrito'] == df_combinado['numero distrito'].loc[row]) &
-        (df_votos_candidatura['codigo seccion'] == df_combinado['codigo seccion'].loc[row]) ]
-
-        for row_sec in range(len(df_seccion)):
-            cand = df_seccion['codigo candidatura'].iloc[row_sec]
-            votos = df_seccion['votos candidatura'].iloc[row_sec]
-            df_combinado.loc[row, cand] = votos
-
-    list_codigos = []
-    for row in tqdm(range(len(df_votos_mesa))[:]):
-        provincia = str(df_combinado['codigo provincia'].iloc[row])
-        provincia = '0' * (2-len(provincia)) + provincia
-        municipio = str(df_combinado['codigo municipio'].iloc[row])
-        municipio = '0' * (3-len(municipio)) + municipio
-        distrito = str(df_combinado['numero distrito'].iloc[row])
-        distrito = '0' * (2-len(distrito)) + distrito
-        seccion = str(df_combinado['codigo seccion'].iloc[row])
-        seccion = '0' * (3-len(seccion)) + seccion
-
-        list_codigos.append(provincia + municipio + distrito + seccion)
-
-    df_combinado['codigo'] = list_codigos
-    df_combinado.index = list_codigos
-    df_combinado.fillna(0)
+    df_combinado = df_combinado[df_votos_mesa.columns.tolist() + df_votos_candidatura.columns.tolist()]
+    df_combinado = df_combinado.fillna(0)
 
     df_combinado.to_sparse(fill_value=np.nan).to_pickle(carpeta + '/resultados_candidaturas.pickle')
 
