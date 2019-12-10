@@ -31,7 +31,7 @@ def procesar_elecciones(carpeta, sufijo):
               'codigo autonomico': [],
               'codigo nacional': []}
 
-    with open(carpeta + '03' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '03' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in f.readlines():
             dict_3['eleccion'].append(l[0:2])
             dict_3['año'].append(l[2:6])
@@ -68,7 +68,7 @@ def procesar_elecciones(carpeta, sufijo):
               'dni': [],
               'candidato elegido': [], }
 
-    with open(carpeta + '04' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '04' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in f.readlines():
             dict_4['eleccion'].append(l[:2])
             dict_4['año'].append(l[2:6])
@@ -108,7 +108,7 @@ def procesar_elecciones(carpeta, sufijo):
               'votos negativos referendum': [], 'datos oficiales': []}
     dict_5_types = [int] * 8 + [str] + [int] * 18 + [str]
 
-    with open(carpeta + '05' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '05' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in f.readlines():
             dict_5['tipo eleccion'].append(l[:2])
             dict_5['año eleccion'].append(l[2:6])
@@ -153,7 +153,7 @@ def procesar_elecciones(carpeta, sufijo):
               'votos candidatura': [], 'numero candidatos': []}
     dict_6_types = [int] * 10
 
-    with open(carpeta + '06' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '06' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in f.readlines():
             dict_6['tipo eleccion'].append(l[:2])
             dict_6['año eleccion'].append(l[2:6])
@@ -185,7 +185,7 @@ def procesar_elecciones(carpeta, sufijo):
               'votos negativos referendum': [], 'datos oficiales': []}
     dict_7_types = [int] * 7 + [str] + [int] * 14 + [str]
 
-    with open(carpeta + '07' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '07' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in f.readlines():
             dict_7['tipo eleccion'].append(l[:2])
             dict_7['año eleccion'].append(l[2:6])
@@ -226,7 +226,7 @@ def procesar_elecciones(carpeta, sufijo):
               'votos candidatura': [], 'numero candidatos': []}
     dict_8_types = [int] * 10
 
-    with open(carpeta + '08' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '08' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in f.readlines():
             dict_8['tipo eleccion'].append(l[:2])
             dict_8['año eleccion'].append(l[2:6])
@@ -258,7 +258,7 @@ def procesar_elecciones(carpeta, sufijo):
               'votos negativos referendum': [], 'datos oficiales': [], 'codigo': []}
     dict_9_types = [int] * 8 + [str] * 2 + [int] * 11 + 2 * [str]
 
-    with open(carpeta + '09' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '09' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in f.readlines():
             dict_9['tipo eleccion'].append(l[:2])
             dict_9['año eleccion'].append(l[2:6])
@@ -300,7 +300,7 @@ def procesar_elecciones(carpeta, sufijo):
                'codigo candidatura': [], 'votos candidatura': [], 'codigo': []}
     dict_10_types = [int] * 8 + [str] * 2 + [int] * 2 + [str]
 
-    with open(carpeta + '10' + sufijo + '.DAT', 'r') as f:
+    with open(carpeta + '10' + sufijo + '.DAT', 'r', encoding="latin-1") as f:
         for l in tqdm(f.readlines()):
             dict_10['tipo eleccion'].append(l[:2])
             dict_10['año eleccion'].append(l[2:6])
@@ -355,8 +355,8 @@ def procesar_elecciones(carpeta, sufijo):
     lista_candts = [i.strip() for i in df_candidaturas['siglas candidatura'].values]
     lista_candts = [intercambios[i] if i in intercambios.keys() else i for i in lista_candts]
 
-    # Reemplazamos todos los PODEMOS-XXXX y simplificamos siglas (las que se lleven escaño al menos).
-    dict_siglas = {'PODEMOS-': 'UP', 'UNID': 'UP', 'ERC-': 'ERC', 'JxCAT-': 'JxCAT', 'CCa-': 'CCa', 'CC-': 'CCa',
+    # Reemplazamos todos los PODEMOS-XXXX y simplificamos siglas (las que se lleven escaño al menos). Incluimos, por facilidad, ECP-GUANYEM EL CAMBI por UP
+    dict_siglas = {'PODEMOS-': 'UP', 'UNID': 'UP', 'ECP': 'UP', 'ERC-': 'ERC', 'JxCAT-': 'JxCAT', 'CCa-': 'CCa', 'CC-': 'CCa',
                    'COMPROM': 'COMPR', 'CUP-': 'CUP', 'BNG-': 'BNG', '¡TERUEL': '¡TE!', 'PP-': 'PP'}
 
     for key, val in dict_siglas.items():
