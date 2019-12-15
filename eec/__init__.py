@@ -2,6 +2,8 @@ from .descargar_datos import sacar_datos
 from .procesar_renta_demografia import procesar_renta
 from .procesar_renta_demografia import procesar_demografia
 from .procesar_elecciones import procesar_elecciones
+from .funciones_ploteo import scatter_multiselect_subordinada
+from .ploteo_UMAP import dibujar_UMAP_votos_autonomia
 # from .procesar_datos_demograficos import pro
 
 __author__ = ', '.join([
