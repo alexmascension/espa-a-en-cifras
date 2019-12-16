@@ -3,18 +3,18 @@ import panel
 import holoviews as hv
 import pandas as pd
 import numpy as np
-from bokeh.models import HoverTool, LinearColorMapper, LogColorMapper
-hv.extension('bokeh')
-from bokeh.io import show, output_file, push_notebook, curdoc
-from bokeh.models import ColumnDataSource, Select, HoverTool, Panel, Tabs
-from bokeh.plotting import figure
-from bokeh.models.widgets import MultiSelect, CheckboxGroup, Dropdown
-from bokeh.layouts import column , row
+import panel
+import param
+from bokeh.io import curdoc
 from bokeh.themes import Theme
+from bokeh.plotting import figure
+import matplotlib.pyplot as plt
+import matplotlib as mpl
 
 import umap
 import scipy.stats as sts
 import scanpy as sc
+from bokeh.models import HoverTool
 
 dict_prov = {'Araba/Álava': 'Euskadi', 'Albacete': "Castilla la Mancha", 'Alicante': "Comunidad Valenciana",'Almería': 'Andalucía',
  'Ávila': "Castilla y León", 'Badajoz': "Extremadura", 'Balears, Illes': "Baleares", 'Barcelona': "Cataluña",
@@ -33,31 +33,6 @@ dict_prov = {'Araba/Álava': 'Euskadi', 'Albacete': "Castilla la Mancha", 'Alica
 
 dict_num_prov = {list(dict_prov.keys())[i]:i for i in range(len(dict_prov))}
 
-dict_color_leiden = {0: '#5F4690', 1: '#1D6996', 2: '#38A6A5', 3: '#0F8554', 4: '#73AF48',
-                     5: '#EDAD08', 6: '#E17C05', 7: '#CC503E', 8: '#94346E', 9: '#6F4070',
-                     10: '#994E95', 11: '#666666', 12:'#11A579', 13:'#E73F74', 14:'#CF1C90',
-                     15:'#3969AC', 16:'#4b4b8f', 17:'#66C5CC', 18:'#F89C74', 19:'#DCB0F2',
-                     20:'#FE88B1', 21:'#661100'}
-
-dict_num_autonomias = {'Navarra': 0,
- 'Canarias': 1,
- 'Baleares': 2,
- 'Comunidad Valenciana': 3,
- 'Asturias': 4,
- 'Andalucía': 5,
- 'Aragón': 6,
- 'Murcia': 7,
- 'Extremadura': 8,
- 'Ceuta': 9,
- 'Cataluña': 10,
- 'Cantabria': 11,
- 'Madrid': 12,
- 'Castilla y León': 13,
- 'La Rioja': 14,
- 'Euskadi': 15,
- 'Melilla': 16,
- 'Castilla la Mancha': 17,
- 'Galicia': 18}
 
 
 def calcular_leiden(array, res, subres, seed):
@@ -101,42 +76,14 @@ def calcular_UMAP(df, seed):
 def map_sizes(r, min_pop, max_pop, r_min=2, r_max=13,):
     return r_min + (r - min_pop) / (max_pop - min_pop) * (r_max - r_min)
 
-def color_mapper(c2, c1, mix):
-    if np.isnan(mix): mix=0
-    c1=np.array(mpl.colors.to_rgb(c1))
-    c2=np.array(mpl.colors.to_rgb(c2))
-    return mpl.colors.to_hex((1-mix)*c1 + mix*c2)
 
-
-hover = HoverTool(
-    tooltips="""
-        <div><span style="font-size: 17px; font-weight: bold;">@Nombre</span></div>
-        <div><span style="font-size: 12px;">@provincia (@autonomia), @poblacion</span></div>
-        <div><span style="font-size: 14px; font-weight: bold;">@partido_1</span>
-        <span style="font-size: 13px;">@porcentaje_1 %</span></div>
-        <div><span style="font-size: 14px; font-weight: bold;">@partido_2</span>
-        <span style="font-size: 13px;">@porcentaje_2 %</span></div>
-        <div><span style="font-size: 14px; font-weight: bold;">@partido_3</span>
-        <span style="font-size: 13px;">@porcentaje_3 %</span></div>
-        <div><span style="font-size: 14px; font-weight: bold;">% Abstención</span>
-        <span style="font-size: 13px;">@porcentaje_abstencion %</span></div>
-        <div><span style="font-size: 14px; font-weight: bold;">Grupo</span>
-        <span style="font-size: 13px;">@leiden</span></div>""",
-    # display a tooltip whenever the cursor is vertically in line with a glyph
-
-)
-
-
-
-def dibujar_UMAP_votos_autonomia(df, resolucion, subresolucion, seed, r_min=2, r_max=13, alpha_max=0.95, alpha_min=0.00, titulo=''):
+def crear_df_datos(df, resolucion, subresolucion, seed, r_min=2, r_max=13, ):
     embedding = calcular_UMAP(df, seed)
     array = df[[i for i in df.columns
-                if (i.startswith('porcentaje_')) & (i not in ['porcentaje_1', 'porcentaje_2',
-                                                              'porcentaje_3'])]].copy().values
+                if (i.startswith('porcentaje_')) ]].copy().values
     df['leiden'] = calcular_leiden(array, resolucion, subresolucion, seed)
     min_pop, max_pop = np.power(min(df['censo escrutinio'].values), 0.05), np.power(max(df['censo escrutinio'].values),
                                                                                     0.05)
-
     df_datos = pd.DataFrame(dict({'x': embedding[:, 0], 'y': embedding[:, 1],
                                   'partido_1': df['partido_1'].values,
                                   'partido_2': df['partido_2'].values,
@@ -150,25 +97,73 @@ def dibujar_UMAP_votos_autonomia(df, resolucion, subresolucion, seed, r_min=2, r
                                   'leiden': df['leiden'].values},
                                  **{i: df[i].values for i in df.columns if (i.startswith('porcentaje_'))}))
 
+    return df_datos
+
+
+def dibujar_UMAP_votos_autonomia(df, dict_colores, alpha_max=0.95, alpha_min=0.00, titulo=''):
     class UMAPPlotClass(param.Parameterized):
-        lista_opciones = ['leiden'] + [i for i in df_datos.columns if (i.startswith('porcentaje_')) &
-                                       (i not in ['porcentaje_1', 'porcentaje_2', 'porcentaje_3'])] + \
-                         ['partido_1', 'partido_2', 'partido_3']
-        lista_autonomias = sorted(list(dict.fromkeys(df_datos['autonomia'].values)))
+        lista_opciones = ['leiden'] + ['partido_1', 'partido_2', 'partido_3'] + ['provincia', 'autonomia'] + \
+                         [i for i in df.columns if (i.startswith('porcentaje_')) &
+                          (i not in ['porcentaje_1', 'porcentaje_2', 'porcentaje_3'])]
+        lista_autonomias = sorted(list(dict.fromkeys(df['autonomia'].values)))
 
         obj_opciones = param.ObjectSelector(default='leiden', objects=lista_opciones)
         obj_autonomias = param.ListSelector(default=lista_autonomias, objects=lista_autonomias)
 
-        @panel.depends('obj_opciones', 'obj_autonomias', watch=True)
+        def color_mapper(self, c2, c1, mix):
+            if np.isnan(mix): mix = 0
+            c1 = np.array(mpl.colors.to_rgb(c1))
+            c2 = np.array(mpl.colors.to_rgb(c2))
+            return mpl.colors.to_hex((1 - mix) * c1 + mix * c2)
+
+        def crear_plot(self, sub_df):
+            UMAP = figure(plot_height=700, plot_width=700, tools='box_zoom,reset,pan,wheel_zoom,lasso_select,undo,redo',
+                          sizing_mode='scale_width', output_backend="webgl", toolbar_location='right')
+
+            hover_UMAP = HoverTool(
+                tooltips="""
+                    <div><span style="font-size: 17px; font-weight: bold;">@Nombre</span></div>
+                    <div><span style="font-size: 12px;">@provincia (@autonomia), @poblacion</span></div>
+                    <div><span style="font-size: 14px; font-weight: bold;">@partido_1</span>
+                    <span style="font-size: 13px;">@porcentaje_1 %</span></div>
+                    <div><span style="font-size: 14px; font-weight: bold;">@partido_2</span>
+                    <span style="font-size: 13px;">@porcentaje_2 %</span></div>
+                    <div><span style="font-size: 14px; font-weight: bold;">@partido_3</span>
+                    <span style="font-size: 13px;">@porcentaje_3 %</span></div>
+                    <div><span style="font-size: 14px; font-weight: bold;">% Abstención</span>
+                    <span style="font-size: 13px;">@porcentaje_abstencion %</span></div>
+                    <div><span style="font-size: 14px; font-weight: bold;">Grupo</span>
+                    <span style="font-size: 13px;">@leiden</span></div>""",
+            )
+
+            UMAP.add_tools(hover_UMAP)
+            UMAP.axis.visible, UMAP.xgrid.visible, UMAP.ygrid.visible = False, False, False
+            UMAP.scatter('x', 'y', source=sub_df, line_alpha='alpha_line', line_width=0.3, line_color="#000000",
+                         size='tamano', color='color', alpha='alpha')
+
+            return UMAP
+
+        @panel.depends('obj_opciones', 'obj_autonomias')
         def update_plot(self):
-            sub_df = df_datos.copy()
+            dict_color_leiden = {0: '#5F4690', 1: '#1D6996', 2: '#38A6A5', 3: '#0F8554', 4: '#73AF48',
+                                 5: '#EDAD08', 6: '#E17C05', 7: '#CC503E', 8: '#94346E', 9: '#6F4070',
+                                 10: '#994E95', 11: '#666666', 12: '#11A579', 13: '#E73F74', 14: '#CF1C90',
+                                 15: '#3969AC', 16: '#4b4b8f', 17: '#66C5CC', 18: '#F89C74', 19: '#DCB0F2',
+                                 20: '#FE88B1', 21: '#661100'}
+            dict_num_autonomias = {'Navarra': 0, 'Canarias': 1, 'Baleares': 2, 'Comunidad Valenciana': 3,
+                                   'Asturias': 4, 'Andalucía': 5, 'Aragón': 6, 'Murcia': 7, 'Extremadura': 8,
+                                   'Ceuta': 9, 'Cataluña': 10,
+                                   'Cantabria': 11, 'Madrid': 12, 'Castilla y León': 13, 'La Rioja': 14, 'Euskadi': 15,
+                                   'Melilla': 16,
+                                   'Castilla la Mancha': 17, 'Galicia': 18}
+            sub_df = df.copy()
             # Primero aplicamos el color
             attr = self.obj_opciones
             if attr in ['partido_1', 'partido_2', 'partido_3']:
                 sub_df['color'] = [dict_colores[i] for i in sub_df[attr]]
             elif attr in ['porcentaje_blancos', 'porcentaje_nulos', 'porcentaje_abstencion']:
                 max_attr = max(sub_df[attr])
-                sub_df['color'] = [color_mapper('#000000', "#bbbbbb", i / max_attr) for i in sub_df[attr]]
+                sub_df['color'] = [self.color_mapper('#000000', "#bbbbbb", i / max_attr) for i in sub_df[attr]]
             elif attr == 'leiden':
                 sub_df['color'] = [dict_color_leiden[i % len(dict_color_leiden)] for i in sub_df[attr]]
             elif attr == 'provincia':
@@ -176,9 +171,9 @@ def dibujar_UMAP_votos_autonomia(df, resolucion, subresolucion, seed, r_min=2, r
             elif attr == 'autonomia':
                 sub_df['color'] = [dict_color_leiden[dict_num_autonomias[i] % 19] for i in sub_df[attr]]
             else:
-                max_attr = max(df[attr])
-                sub_df['color'] = [color_mapper(dict_colores[attr.replace('porcentaje_', '')],
-                                            "#f0f0f0", i / max_attr) for i in sub_df[attr]]
+                max_attr = max(sub_df[attr])
+                sub_df['color'] = [self.color_mapper(dict_colores[attr.replace('porcentaje_', '')],
+                                                     "#f0f0f0", i / max_attr) for i in sub_df[attr]]
             # Ahora aplicamos el alpha de las autonomías
             aut_select = self.obj_autonomias
             sub_df['alpha'] = alpha_min
@@ -186,14 +181,7 @@ def dibujar_UMAP_votos_autonomia(df, resolucion, subresolucion, seed, r_min=2, r
             sub_df.loc[sub_df['autonomia'].isin(aut_select), 'alpha'] = alpha_max
             sub_df.loc[sub_df['autonomia'].isin(aut_select), 'alpha_line'] = 0.45
 
-            UMAP = figure(plot_height=700, plot_width=700, tools='box_zoom,reset,pan,wheel_zoom,lasso_select,undo,redo',
-                          sizing_mode='scale_width', output_backend="webgl", toolbar_location='right')
-            UMAP.add_tools(hover)
-            UMAP.axis.visible = False
-            UMAP.scatter('x', 'y', source=sub_df, line_alpha='alpha_line', line_width=0.3, line_color="#000000",
-                         size='tamano', color='color', alpha='alpha')
-
-            return UMAP
+            return self.crear_plot(sub_df)
 
     sss = UMAPPlotClass(name=titulo)
     panel_row = panel.Row(panel.Param(sss.param, widgets={'obj_opciones': {'name': 'Opciones'},

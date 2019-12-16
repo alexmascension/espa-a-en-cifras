@@ -2,27 +2,8 @@ import panel
 import param
 from bokeh.io import curdoc
 from bokeh.themes import Theme
+from bokeh.plotting import figure
 
-curdoc().theme = Theme(json={'attrs': {# apply defaults to Figure properties
-'Figure': {
-    'toolbar_location': 'right',
-    'outline_line_color': None,
-    'min_border_right': 10,
-    'sizing_mode': 'stretch_width',
-    'outline_line_color': None
-},'Grid': {
-    'grid_line_color': None,
-},
-'Title': {
-    'text_font_size': '14pt'
-},# apply defaults to Axis properties
-'Axis': {
-    'visible': False,
-},
-# apply defaults to Legend properties
-'Legend': {
-    'background_fill_alpha': 0.8,
-}}})
 
 def scatter_multiselect_subordinada(df, var_indepe, var_subord, x, y, titulo='', hover=None, alpha_max=0.9,
                                     alpha_min=0.02, **scatter_kwargs):
