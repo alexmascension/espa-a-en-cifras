@@ -1,0 +1,6 @@
+scanpy
+geopandas
+holoviews
+panel
+bokeh
+

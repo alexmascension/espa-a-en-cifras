@@ -1,0 +1,31 @@
+Siglas	Color	RGBA	Nombre
+PSOE	#c23236	Rgba(194, 50, 54, 1)	Partido Socialista Obrero Español
+PP	#155199	Rgba(21, 81, 153, 1)	Partido Popular
+VOX	#8fd93b	Rgba(143, 217, 59, 1)	VOX
+UP	#672d64	Rgba(103, 45, 100, 1)	Podemos / Unidas Podemos
+ERC	#e2aa2b	Rgba(226, 170, 43, 1)	Esquerra Republicana de Catalunya
+Cs	#ff5a26	Rgba(255, 90, 38, 1)	Ciudadanos
+JxCAT	#b71b46	Rgba(183, 27, 70, 1)	Junts per Catalunya
+EAJ-PNV	#238c42	Rgba(35, 140, 66, 1)	Partido Nacionalista Vasco
+EH Bildu	#8ca33b	Rgba(140, 163, 59, 1)	Euskal Herria Bildu
+MÁS PAÍS	#3da09c	Rgba(61, 160, 156, 1)	Más País
+CUP	#f3e82e	Rgba(243, 232, 46, 1)	Candudatura de Unidad Popular
+CCa	#f1d131	Rgba(241, 209, 49, 1)	Coalición Canaria
+NA+	#690707	Rgba(105, 7, 7, 1)	Navarra Suma
+BNG	#71a0c2	Rgba(113, 160, 194, 1)	Bloque Nacionalista Galego
+PRC	#389d8c	Rgba(56, 157, 140, 1)	Partido Regionalista de Cantabria
+¡TE!	#086d4e	Rgba(8, 109, 78, 1)	¡Teruel Existe!
+COMPR	#cb622d	Rgba(209, 98, 45, 1)	Compromís
+CDC	#369c8c	Rgba(54, 156, 140, 1)	Convergència Democràtica de Catalunya
+DL	#242866	Rgba(36, 40, 102, 1)	Democràcia i Llibertat
+ECP-GUANYEM	#ed421f	Rgba(237, 66, 31, 1)	En Comú Podem - Guanyem
+CpM	#488a43	Rgba(72, 138, 67, 1)	Coalición por Melilla
+NCa	#81c03b	Rgba(129, 192, 59, 1)	Nueva Canarias
+GBAI	#d31826	Rgba(211, 24, 38, 1)	Geroa Bai
+ARA-MES-ESQ	#bdd078	Rgba(189, 208, 120, 1)	Veus Progressistes
+PPSO	#8c024f	Rgba(140, 2, 79, 1)	Plataorma del Pueblo Soriano
+JF	#a4a4a4	Rgba(164, 164, 164, 1)	Partido de Jubilados y Pensionistas de España
+PACMA	#ADBE18	Rgba(173, 190, 24, 1)	Partido Animalista contra el Maltrato Animal
+PCTE	#cb1a2f	Rgba(203, 26, 47, 1)	Partido Comunista de los Trabajadores de España
+PCPE	#cb1a2f	Rgba(203, 26, 47, 1)	Partido Comunista de los Pueblos de España
+PUM+J	#4bbced	Rgba(75, 188, 237, 1)	Por un Mundo más Justo
