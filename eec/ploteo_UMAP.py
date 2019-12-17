@@ -77,14 +77,14 @@ def calcular_UMAP(df, seed):
     return embedding
 
 
-def crear_dict_datos(df, resolucion, subresolucion, seed, r_min=2, r_max=13, ):
+def crear_df_datos(df, resolucion, subresolucion, seed, r_min=2, r_max=13, ):
     embedding = calcular_UMAP(df, seed)
     array = df[[i for i in df.columns
                 if (i.startswith('porcentaje_'))]].copy().values
     df['leiden'] = calcular_leiden(array, resolucion, subresolucion, seed)
     min_pop, max_pop = np.power(min(df['censo escrutinio'].values), 0.05), np.power(max(df['censo escrutinio'].values),
                                                                                     0.05)
-    dict_datos = dict({'x': embedding[:, 0], 'y': embedding[:, 1],
+    df_datos = pd.DataFrame(dict({'x': embedding[:, 0], 'y': embedding[:, 1],
                        'partido_1': df['partido_1'].values,
                        'partido_2': df['partido_2'].values,
                        'partido_3': df['partido_3'].values,
@@ -96,9 +96,9 @@ def crear_dict_datos(df, resolucion, subresolucion, seed, r_min=2, r_max=13, ):
                        'alpha': np.array([0.99 for _ in df['censo escrutinio'].values]),
                        'alpha_line': np.array([0.45 for _ in df['censo escrutinio'].values]),
                        'leiden': df['leiden'].values},
-                      **{i: df[i].values for i in df.columns if (i.startswith('porcentaje_'))})
+                      **{i: df[i].values for i in df.columns if (i.startswith('porcentaje_'))}))
 
-    return dict_datos
+    return df_datos
 
 
 def dibujar_UMAP_votos_autonomia(df, dict_colores, alpha_max=0.95, alpha_min=0.00, titulo=''):
@@ -110,16 +110,18 @@ def dibujar_UMAP_votos_autonomia(df, dict_colores, alpha_max=0.95, alpha_min=0.0
     En este caso, source tiene que ser un ColumnDataSource. No funciona con un DataFrame.
 
     Para hacer entonces la figura y updatear, la estrategia a seguir es la siguiente.
-    1) Crear la figura con una función interna (NO METODO). Esta función crea el Datasource (NO SE podría importar
+    1) Crear la figura con una función interna crear_fig (NO METODO). Esta función crea el Datasource (NO SE podría importar
     como atributo de la función inicial). La función retorna la figura y el DataSource, que ahora son atributos de clase.
     2) Para updatear la figura hay que crear un diccionario con la misma forma que el DataSource (NO SE PUEDEN CREAR
     NUEVAS COLUMNAS). Este diccionario, con los elementos cambiados, se emplea en source.stream(dict, N).
     N es el número de puntos que hay en la figura. Si se ponen menos puntos, se eliminan de la figura, y si se ponen
     más se generan por encima de los que ya hay.
-    3) Como otro método de importación, se puede trabajar siempre con un DataFrame, y a la hora de pasar a
-    ColumnDataSource, se emplea el método df.to_dict(orient='list').
+    3) Como otro método de importación, se puede trabajar siempre con un DataFrame. Es decir, tanto la creación del
+    DataSource (ColumnDataSource(df)) como la actualización del source (source.stream(sub_df, len(sub_df)) pueden
+    emplearse DataFrames, siempre que se mantengan las mismas columnas y puntos.
 
     """
+
     class UMAPPlotClass(param.Parameterized):
         lista_opciones = ['leiden'] + ['partido_1', 'partido_2', 'partido_3'] + ['provincia', 'autonomia'] + \
                          [i for i in df.keys() if (i.startswith('porcentaje_')) &
@@ -135,7 +137,7 @@ def dibujar_UMAP_votos_autonomia(df, dict_colores, alpha_max=0.95, alpha_min=0.0
             c2 = np.array(mpl.colors.to_rgb(c2))
             return mpl.colors.to_hex((1 - mix) * c1 + mix * c2)
 
-        def crear_fig(): # Esto técnicamente está mal pero funciona, así que ni lo toco
+        def crear_fig():  # Esto técnicamente está mal pero funciona, así que ni lo toco
             fig = figure(plot_height=700, plot_width=700, tools='box_zoom,reset,pan,wheel_zoom,lasso_select,undo,redo',
                          sizing_mode='scale_width', output_backend="webgl", toolbar_location='right')
 
@@ -157,7 +159,6 @@ def dibujar_UMAP_votos_autonomia(df, dict_colores, alpha_max=0.95, alpha_min=0.0
 
             fig.add_tools(hover_UMAP)
             fig.axis.visible, fig.xgrid.visible, fig.ygrid.visible = False, False, False
-
             source = ColumnDataSource(df)
             fig.scatter('x', 'y', source=source, line_alpha='alpha_line', line_width=0.3, line_color="#000000",
                         size='tamano', color='color', alpha='alpha')
@@ -183,17 +184,16 @@ def dibujar_UMAP_votos_autonomia(df, dict_colores, alpha_max=0.95, alpha_min=0.0
             # Primero aplicamos el color
             attr = self.obj_opciones
             if attr in ['partido_1', 'partido_2', 'partido_3']:
-                sub_df['color'] = np.array([dict_colores[i] for i in sub_df[attr]])
+                sub_df['color'] = [dict_colores[i] for i in sub_df[attr]]
             elif attr in ['porcentaje_blancos', 'porcentaje_nulos', 'porcentaje_abstencion']:
                 max_attr = max(sub_df[attr])
-                sub_df['color'] = np.array(
-                    [self.color_mapper('#000000', "#bbbbbb", i / max_attr) for i in sub_df[attr]])
+                sub_df['color'] = [self.color_mapper('#000000', "#bbbbbb", i / max_attr) for i in sub_df[attr]]
             elif attr == 'leiden':
-                sub_df['color'] = np.array([dict_color_leiden[i % len(dict_color_leiden)] for i in sub_df[attr]])
+                sub_df['color'] = [dict_color_leiden[i % len(dict_color_leiden)] for i in sub_df[attr]]
             elif attr == 'provincia':
-                sub_df['color'] = np.array([dict_color_leiden[dict_num_prov[i] % 15] for i in sub_df['provincia']])
+                sub_df['color'] = [dict_color_leiden[dict_num_prov[i] % 15] for i in sub_df['provincia']]
             elif attr == 'autonomia':
-                sub_df['color'] = np.array([dict_color_leiden[dict_num_autonomias[i] % 19] for i in sub_df[attr]])
+                sub_df['color'] = [dict_color_leiden[dict_num_autonomias[i] % 19] for i in sub_df[attr]]
             else:
                 max_attr = max(sub_df[attr])
                 sub_df['color'] = np.array([self.color_mapper(dict_colores[attr.replace('porcentaje_', '')],
@@ -201,12 +201,13 @@ def dibujar_UMAP_votos_autonomia(df, dict_colores, alpha_max=0.95, alpha_min=0.0
             # Ahora aplicamos el alpha de las autonomías
             aut_select = self.obj_autonomias
 
-            sub_df['alpha'] = np.array([alpha_min] * len(sub_df['alpha']))
-            sub_df['alpha_line'] = np.array([alpha_min] * len(sub_df['alpha_line']))
-            sub_df['alpha'][np.argwhere(np.isin(sub_df['autonomia'], aut_select)).flatten()] = alpha_max
-            sub_df['alpha_line'][np.argwhere(np.isin(sub_df['autonomia'], aut_select)).flatten()] = 0.45
+            sub_df['alpha'] = [alpha_min] * len(sub_df['alpha'])
+            sub_df['alpha_line'] = [alpha_min] * len(sub_df['alpha_line'])
+            sub_df.loc[sub_df['autonomia'].isin(aut_select), 'alpha'] = alpha_max
+            sub_df.loc[sub_df['autonomia'].isin(aut_select), 'alpha_line'] = 0.45
 
-            self.source.stream(sub_df, len(sub_df['alpha']))
+            self.source.stream(sub_df, len(sub_df))
+
             return self.UMAP
 
     sss = UMAPPlotClass(name=titulo)
