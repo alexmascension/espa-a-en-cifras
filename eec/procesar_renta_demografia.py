@@ -11,6 +11,14 @@ from tqdm import tqdm
 
 
 def procesar_renta(carpeta, años):
+    """
+    Crea un dataframe con toda la información de los datos de la renta. En el caso de 2015 2016, hay una separación
+    de cada una de las columnas en dos años. La variable años sirve para indicar que esas dos columnas existen y se
+    va a generar un MultiIndex basado en esa composición anual.
+    :param carpeta:
+    :param años:
+    :return:
+    """
     df = pd.read_csv(carpeta + '/renta_media.csv', skiprows=4, sep=';', error_bad_lines=False)
 
     df_name = pd.DataFrame(data=df.iloc[1:-4,0].values, columns=['nombre'])

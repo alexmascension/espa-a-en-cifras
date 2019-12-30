@@ -45,7 +45,7 @@ def scatter_multiselect_subordinada(df, var_indepe, var_subord, x, y, titulo='',
 
             scatter = figure(plot_height=400, plot_width=400,
                              tools='reset,box_zoom,pan,wheel_zoom,lasso_select,undo,redo',
-                             sizing_mode='scale_width', output_backend="webgl",
+                             sizing_mode='scale_width', output_backend="webgl", toolbar_location='above',
                              y_range=(y_start, y_end))
 
             hover = HoverTool(
