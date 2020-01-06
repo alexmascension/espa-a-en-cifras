@@ -40,7 +40,7 @@ def procesar_renta(carpeta, años):
     df_rest[df_rest == '.'] = 0
     df_rest = df_rest.astype(float)
 
-    nanpos = df_rest[pd.isnull(df_rest).any(axis=1)].index
+    nanpos = df_rest[pd.isnull(df_rest).all(axis=1)].index # Si se pone np.any se va gipuzkoa porque en 2015 no tenia renta
 
     for row in tqdm(nanpos):
         if len(row) < 6:
@@ -52,7 +52,7 @@ def procesar_renta(carpeta, años):
     df_rest.to_pickle(carpeta + '/renta_media_procesado.pickle')
 
 
-def procesar_demografia(fichero, columnas):
+def procesar_demografia(fichero, columnas, cifras_cutoff=8):
     df = pd.read_csv(fichero, skiprows=4, sep=';', error_bad_lines=False, names=None, header=None)
 
     df_name = pd.DataFrame(data=df.iloc[len(columnas):-4, 0].values, columns=['nombre'])
@@ -70,8 +70,8 @@ def procesar_demografia(fichero, columnas):
     df_rest[df_rest == '..'] = np.NaN
 
     # En estos datos no hay información de sección, pero sí de distrito. Así, primero quitamos las secciones y luego rellenamos
-    # la información de los distritos
-    df_rest = df_rest.loc[[i for i in codigo if len(i) < 8]].astype(float)
+    # la información de los distritos. CUIDADO! Para el archivo de datos demográficos generales SI hay info de todo. Así que ese nos lo tenemos que quedar.
+    df_rest = df_rest.loc[[i for i in codigo if len(i) < cifras_cutoff]].astype(float)
 
     nan_rows = df_rest.loc[np.all(np.isnan(df_rest), 1)].index
 
