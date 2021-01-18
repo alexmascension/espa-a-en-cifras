@@ -29,3 +29,4 @@ PACMA	#ADBE18	Rgba(173, 190, 24, 1)	Partido Animalista contra el Maltrato Animal
 PCTE	#cb1a2f	Rgba(203, 26, 47, 1)	Partido Comunista de los Trabajadores de España
 PCPE	#cb1a2f	Rgba(203, 26, 47, 1)	Partido Comunista de los Pueblos de España
 PUM+J	#4bbced	Rgba(75, 188, 237, 1)	Por un Mundo más Justo
+MP	#06dec5	Rgba(6, 222, 197, 1)	Más País
