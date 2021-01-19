@@ -349,17 +349,22 @@ def procesar_elecciones(carpeta, sufijo):
 
     intercambios = {'AVANT ADELA': 'AVANT', 'AVANT-LOS V': 'AVANT', 'EB': 'EB', 'EB-AZ': 'EB',
                     'MÁS PAÍS-': 'MÁS PAÍS', 'M PAÍS': 'MÁS PAÍS', 'M PAÍS-': 'MÁS PAÍS',
-                    'PCOE': 'PC', 'PCPA': 'PC', 'PCPC': 'PC', 'PCPE': 'PC', 'PCTE/ELAK': 'PC', 'PCTG': 'PC',
+                    'MÉS-ESQUERR': 'ERC', 'RECORTES CERO-GV': 'RECORTES CERO', 
+                    'PCOE': 'PC', 'PCPA': 'PC', 'PCPC': 'PC', 'PCPE': 'PC', 'PCTE/ELAK': 'PC',    'PCTG': 'PC',
                     'UNIDOS PODEMOS': 'PODEMOS', 'UNIDAS PODEMOS': 'PODEMOS',
-                    'PSC': 'PSOE', 'PSdeG-PSOE': 'PSOE', 'PSE-EE (PSO': 'PSOE', }
+                    'PSC': 'PSOE', 'PSdeG-PSOE': 'PSOE', 
+                    'PSE-EE (PSOE)': 'PSOE', 'PSC-PSOE':'PSOE', 
+                   }
 
     lista_candts = [i.strip() for i in df_candidaturas['siglas candidatura'].values]
     lista_candts = [intercambios[i] if i in intercambios.keys() else i for i in lista_candts]
 
     # Reemplazamos todos los PODEMOS-XXXX y simplificamos siglas (las que se lleven escaño al menos). Incluimos, por facilidad, ECP-GUANYEM EL CAMBI por UP
     dict_siglas = {'PODEMOS-': 'UP', 'UNID': 'UP', 'ECP': 'UP', 'ERC-': 'ERC', 'JxCAT-': 'JxCAT', 
-                   'CCa-': 'CCa', 'CC-': 'CCa', 'MÁS PAÍS': 'MP', 
-                   'COMPROM': 'COMPR', 'CUP-': 'CUP', 'BNG-': 'BNG', '¡TERUEL': '¡TE!', 'PP-': 'PP'}
+                   'CCa-': 'CCa', 'CC-': 'CCa', 'NC-CCa-PNC': 'CCa', 'MÁS PAÍS': 'MP', 
+                   'COMPROM': 'COMPR', 'CUP-': 'CUP', 'BNG-': 'BNG', 
+                   '¡TERUEL': '¡TE!', 'PP-':'PP', 'RECORTES CERO': 'R0', 'AHORA CANARIAS': 'AC', 
+                   }
 
     for key, val in dict_siglas.items():
         lista_candts = [val if i.startswith(key) else i for i in lista_candts]
