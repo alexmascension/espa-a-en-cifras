@@ -348,6 +348,7 @@ def procesar_elecciones(carpeta, sufijo):
     df_candidaturas = df_candidaturas[['codigo candidatura', 'siglas candidatura']]
 
     intercambios = {'AVANT ADELA': 'AVANT', 'AVANT-LOS V': 'AVANT', 'EB': 'EB', 'EB-AZ': 'EB',
+                    'MÁS PAÍS-': 'MÁS PAÍS', 'M PAÍS': 'MÁS PAÍS', 'M PAÍS-': 'MÁS PAÍS',
                     'PCOE': 'PC', 'PCPA': 'PC', 'PCPC': 'PC', 'PCPE': 'PC', 'PCTE/ELAK': 'PC', 'PCTG': 'PC',
                     'UNIDOS PODEMOS': 'PODEMOS', 'UNIDAS PODEMOS': 'PODEMOS',
                     'PSC': 'PSOE', 'PSdeG-PSOE': 'PSOE', 'PSE-EE (PSO': 'PSOE', }
@@ -356,7 +357,8 @@ def procesar_elecciones(carpeta, sufijo):
     lista_candts = [intercambios[i] if i in intercambios.keys() else i for i in lista_candts]
 
     # Reemplazamos todos los PODEMOS-XXXX y simplificamos siglas (las que se lleven escaño al menos). Incluimos, por facilidad, ECP-GUANYEM EL CAMBI por UP
-    dict_siglas = {'PODEMOS-': 'UP', 'UNID': 'UP', 'ECP': 'UP', 'ERC-': 'ERC', 'JxCAT-': 'JxCAT', 'CCa-': 'CCa', 'CC-': 'CCa',
+    dict_siglas = {'PODEMOS-': 'UP', 'UNID': 'UP', 'ECP': 'UP', 'ERC-': 'ERC', 'JxCAT-': 'JxCAT', 
+                   'CCa-': 'CCa', 'CC-': 'CCa', 'MÁS PAÍS': 'MP', 
                    'COMPROM': 'COMPR', 'CUP-': 'CUP', 'BNG-': 'BNG', '¡TERUEL': '¡TE!', 'PP-': 'PP'}
 
     for key, val in dict_siglas.items():
@@ -407,8 +409,11 @@ def procesar_elecciones(carpeta, sufijo):
     df_combinado = df_votos_candidatura.join(df_votos_mesa, how='outer', sort=True)
 
     df_combinado = df_combinado[df_votos_mesa.columns.tolist() + df_votos_candidatura.columns.tolist()]
-    df_combinado = df_combinado.fillna(0)
+    df_combinado = df_combinado.fillna(0).astype(int)
+    
+    # Este datframe está compuesto por todas las mesas electorales (~36k) y por los diferentes partidos (~70)
+    # Para simplificar el guardado y acceso de datos, lo pasamos a sparse (si podemos) y guardamos como pickle.
 
-    df_combinado.to_sparse(fill_value=np.nan).to_pickle(carpeta + '/resultados_candidaturas.pickle')
+    df_combinado.to_pickle(carpeta + '/resultados_candidaturas.pickle')
 
 
