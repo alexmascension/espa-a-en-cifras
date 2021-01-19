@@ -1,0 +1,17 @@
+name: espana_en_cifras
+channels:
+  - conda-forge
+dependencies:
+  - python=3.8 
+  - bokeh
+  - numpy
+  - jupyterlab
+  - numba
+  - pandas
+  - holoviews
+  - tqdm
+  - geopandas
+  - pip:
+    - xlrd
+    - ray
+    - scanpy
