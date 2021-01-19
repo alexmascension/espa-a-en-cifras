@@ -16,5 +16,5 @@ cd tippecanoe && make -j && make install
 npm install -g mapshaper
 
 cd ..
-conda create --file conda_env.yml
+conda env create --file conda_env.yml
 conda activate espana_en_cifras

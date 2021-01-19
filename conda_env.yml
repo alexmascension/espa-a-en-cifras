@@ -12,8 +12,9 @@ dependencies:
   - tqdm
   - geopandas
   - ipywidgets
+  - pip=19.0.*
   - pip:
-    - xlrd
-    - ray
-    - scanpy
-    - leidenalg
+      - xlrd
+      - ray
+      - scanpy
+      - leidenalg
