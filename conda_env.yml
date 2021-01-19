@@ -12,7 +12,7 @@ dependencies:
   - tqdm
   - geopandas
   - ipywidgets
-  - pip=19.0.*
+  - pip
   - pip:
       - xlrd
       - ray
