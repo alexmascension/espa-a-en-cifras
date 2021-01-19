@@ -11,7 +11,9 @@ dependencies:
   - holoviews
   - tqdm
   - geopandas
+  - ipywidgets
   - pip:
     - xlrd
     - ray
     - scanpy
+    - leidenalg
