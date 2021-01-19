@@ -8,7 +8,6 @@ Cs	#ff5a26	Rgba(255, 90, 38, 1)	Ciudadanos
 JxCAT	#b71b46	Rgba(183, 27, 70, 1)	Junts per Catalunya
 EAJ-PNV	#238c42	Rgba(35, 140, 66, 1)	Partido Nacionalista Vasco
 EH Bildu	#8ca33b	Rgba(140, 163, 59, 1)	Euskal Herria Bildu
-MÁS PAÍS	#3da09c	Rgba(61, 160, 156, 1)	Más País
 CUP	#f3e82e	Rgba(243, 232, 46, 1)	Candudatura de Unidad Popular
 CCa	#f1d131	Rgba(241, 209, 49, 1)	Coalición Canaria
 NA+	#690707	Rgba(105, 7, 7, 1)	Navarra Suma
@@ -23,10 +22,15 @@ CpM	#488a43	Rgba(72, 138, 67, 1)	Coalición por Melilla
 NCa	#81c03b	Rgba(129, 192, 59, 1)	Nueva Canarias
 GBAI	#d31826	Rgba(211, 24, 38, 1)	Geroa Bai
 ARA-MES-ESQ	#bdd078	Rgba(189, 208, 120, 1)	Veus Progressistes
-PPSO	#8c024f	Rgba(140, 2, 79, 1)	Plataorma del Pueblo Soriano
+PPSO	#8c024f	Rgba(140, 2, 79, 1)	Plataforma del Pueblo Soriano
 JF	#a4a4a4	Rgba(164, 164, 164, 1)	Partido de Jubilados y Pensionistas de España
 PACMA	#ADBE18	Rgba(173, 190, 24, 1)	Partido Animalista contra el Maltrato Animal
 PCTE	#cb1a2f	Rgba(203, 26, 47, 1)	Partido Comunista de los Trabajadores de España
 PCPE	#cb1a2f	Rgba(203, 26, 47, 1)	Partido Comunista de los Pueblos de España
+PC	#cb1a2f	Rgba(203, 26, 47, 1)	Partido Comunista
 PUM+J	#4bbced	Rgba(75, 188, 237, 1)	Por un Mundo más Justo
 MP	#06dec5	Rgba(6, 222, 197, 1)	Más País
+R0	#606060	Rgba(100, 100, 100, 1)	Recortes cero
+AC	#3a8156	Rgba(58, 129, 86, 1)	Ahora Canarias
+XAV	#f7d806	Rgba(247, 216, 6, 1)	Por Ávila
+MÉS COMPROM	#e2aa2b	Rgba(226, 170, 43, 1)	Més Compromis
